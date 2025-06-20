@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>会員登録</title>
+</head>
+<body>
+〇会員登録
+	<form action="/register" method="post">
+		<table border="1">
+			<tr>
+				<td>氏名</td>
+				<td>
+					<input type="text" name="name">
+				</td>
+			</tr>
+			<tr>
+				<td>パスワード</td>
+				<td>
+					<input type="password" name="password">
+				</td>
+			</tr>
+			<tr>
+				<td>性別</td>
+				<td>
+					<input type="radio" name="gender" value="1">男
+					<input type="radio" name="gender" value="2">女
+					<input type="radio" name="gender" value="9">無回答
+				</td>
+			</tr>
+			<tr>
+				<td>地域</td>
+				<td>
+					<select name="area">
+						<option value="1">北海道</option>
+						<option value="2">東北</option>
+						<option value="3">関東</option>
+						<option value="4">中部</option>
+						<option value="5">近畿</option>
+						<option value="6">四国</option>
+						<option value="7">九州・沖縄</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>興味ある分野</td>
+				<td>
+					<input type="checkbox" name="interest" value="1">ハード・インフラ
+					<input type="checkbox" name="interest" value="2">PG
+					<input type="checkbox" name="interest" value="3">DB
+					<input type="checkbox" name="interest" value="4">NT
+					<input type="checkbox" name="interest" value="9">その他
+				</td>
+			</tr>
+			<tr>
+				<td>備考</td>
+				<td>
+					<textarea name="remarks" rows="4" cols="80"></textarea>
+				</td>
+			</tr>
+		</table>
+		<input type="submit" value="実行">
+	</form>
+</body>
+</html>
