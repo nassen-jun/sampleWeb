@@ -1,4 +1,4 @@
-package com.example.todolist;
+package com.example.demo.todolist;
 
 public class TodolistApplication {
 
