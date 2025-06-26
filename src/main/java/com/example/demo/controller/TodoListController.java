@@ -3,11 +3,17 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.todolist.entity.Todo;
+import com.example.demo.todolist.form.TodoData;
 import com.example.demo.todolist.repository.TodoRepository;
+import com.example.demo.todolist.service.TodoService;
 
 import lombok.AllArgsConstructor;
 
@@ -15,7 +21,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class TodoListController {
 	private final TodoRepository todoRepository;
+	private final TodoService todoService;
 	
+	//Todo一覧表示
 	@GetMapping("/todo")
 	public ModelAndView showTodoList(ModelAndView mv) {
 		//一覧を検索して表示する
@@ -23,5 +31,39 @@ public class TodoListController {
 		List<Todo> todoList = todoRepository.findAll();
 		mv.addObject("todoList", todoList);
 		return mv;
+	}
+
+	//Todo入力フォーム表示
+	//Todo一覧画面で「新規追加」がクリックされたとき
+	@GetMapping("/todo/create")
+	public ModelAndView createTodo(ModelAndView mv) {
+		mv.setViewName("todoForm");
+		mv.addObject("todoData", new TodoData());
+		return mv;
+	}
+	
+	//ToDo追加処理
+	//Todo入力画面で「登録」がクリックされたとき
+	@PostMapping("/todo/create")
+	public ModelAndView createTodo(@ModelAttribute @Validated TodoData todoData,
+									BindingResult result,
+									ModelAndView mv) {
+		boolean isValid = todoService.isValid(todoData, result);
+		if(!result.hasErrors() && isValid) {
+			//エラーなし
+			Todo todo = todoData.toEntity();
+			todoRepository.saveAndFlush(todo);
+			return showTodoList(mv);
+		} else {
+			//エラーあり
+			mv.setViewName("todoForm");
+			return mv;	
+		}
+	}
+	//ToDo一覧に戻る
+	//ToDo入力画面で「キャンセル登録」ボタンがクリックされたとき
+	@PostMapping("/todo/cancel")
+	public String cancel() {
+		return "redirect:/todo";
 	}
 }
