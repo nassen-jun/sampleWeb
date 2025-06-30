@@ -15,7 +15,7 @@ public class TodoService {
 		boolean ans = true;
 		//件名が全角スペースだけで構成されていたらエラー
 		String title = todoData.getTitle();
-		if(title!= null && title.equals("")) {
+		if(title!= null && !title.equals("")) {
 			boolean isAllDoubleSpace = true;
 			for(int i = 0; i < title.length(); i++) {
 				if(title.charAt(i)!='　') {
