@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.todolist.entity.Todo;
 import com.example.demo.todolist.form.TodoData;
+import com.example.demo.todolist.form.TodoQuery;
 import com.example.demo.todolist.repository.TodoRepository;
 import com.example.demo.todolist.service.TodoService;
 
@@ -34,12 +35,28 @@ public class TodoListController {
 		mv.setViewName("todoList");
 		List<Todo> todoList = todoRepository.findAll();
 		mv.addObject("todoList", todoList);
+		mv.addObject("todoQuery", new TodoQuery());
 		return mv;
 	}
 
+	@PostMapping("/todo/query")
+	public ModelAndView queryTodo(@ModelAttribute TodoQuery todoQuery,
+								BindingResult result,
+								ModelAndView mv) {
+		mv.setViewName("todoList");
+		List<Todo> todoList = null;
+		if(todoService.isValid(todoQuery, result)) {
+			//エラーがなければ検索
+			todoList = todoService.doQuery(todoQuery);
+			//mv.addObject("todoQuery", todoQuery);
+			mv.addObject("todoList", todoList);		
+		}
+		return mv;
+	}
+	
 	//Todo入力フォーム表示
 	//Todo一覧画面で「新規追加」がクリックされたとき
-	@GetMapping("/todo/create")
+	@GetMapping("/todo/create/form")
 	public ModelAndView createTodo(ModelAndView mv) {
 		mv.setViewName("todoForm");
 		mv.addObject("todoData", new TodoData());
@@ -81,6 +98,7 @@ public class TodoListController {
 		return mv;
 		
 	}
+
 	@PostMapping("/todo/update")
 	public String updateTodo(@ModelAttribute @Validated TodoData todoData,
 							BindingResult result, Model model) {
@@ -94,8 +112,5 @@ public class TodoListController {
 		} else {
 			return "todoForm";
 		}
-		
 	}
-	
-	
 }

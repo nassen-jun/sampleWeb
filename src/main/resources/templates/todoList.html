@@ -6,6 +6,51 @@
 <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
+	<form th:action="@{/}" method="post" th:object="${todoQuery}">
+		<table border="1">
+			<tr>
+				<th>件名</th>
+				<th>重要度</th>
+				<th>緊急度</th>
+				<th>期限</th>
+				<th>完了</th>
+			</tr>
+			<tr>
+				<td>
+					<input type="text" name="title" size="40" th:value="*{title}" />
+				</td>
+				<td>
+					<select th:field="*{importance}">
+						<option value="-1">-</option>
+						<option value="1">高</option>
+						<option value="0">低</option>
+					</select>
+				</td>
+				<td>
+					<select th:field="*{urgency}">
+						<option value="-1">-</option>
+						<option value="1">高</option>
+						<option value="0">低</option>
+					</select>
+				</td>
+				<td>
+					<input type="text" name="deadlineFrom" th:value="*{deadlineFrom}" size="10" placeholder="yyyy-mm-dd" />
+					~
+					<input type="text" name="deadlineTo" th:value="*{deadlineTo}" size="10" placeholder="yyyy-mm-dd" />
+				</td>
+				<td>
+					<input type="checkbox" th:field="*{done}" value="Y" />完了
+				</td>
+			</tr>
+		</table>
+		<div>
+			<button type="submit" th:formaction="@{/todo/query}">検索</button>
+			<button type="submit" th:formaction="@{/todo/create/form}">新規追加</button>
+		</div>
+		<div th:if="${#fields.hasErrors('deadlineFrom')}" th:errors="*{deadlineFrom}" th:errorclass="red"></div>
+		
+	</form>
+			<!-- Todolist4追加箇所↑ -->
 	<table border="1">
 		<tr>
 			<th>id</th>

@@ -50,7 +50,9 @@
 				</tr>
 			</table>
 			<div>
-				<button type="submit" th:formaction="@{/todo/create}">登録</button>
+				<a th:href="@{/todo/create/form}">
+ 					 <button type="button">新規追加</button>
+				</a>
 				<button type="submit" th:formaction="@{/todo/cancel}">キャンセル</button>
 			</div>
 		</form>
