@@ -7,12 +7,14 @@
 </head>
 	<body>
 		<form th:action="@{/todo/create}" method="post" th:object="${todoData}">
+			<input type="hidden" th:field="*{id}" />
 			<table>
 				<tr>
 					<th>件名</th>
 					<td>
-						<input type="text" th:field="*{title}" size="40">
-						<div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" th:errorclass="red"></div>
+						<input type="text" th:field="*{title}" size="40" th:value="*{title}">
+						<div th:if="${#fields.hasErrors('title')}" th:errors="*{title}"
+							th:errorclass="red"></div>
 					</td>
 				</tr>
 				<tr>
@@ -49,9 +51,18 @@
 					</td>
 				</tr>
 			</table>
+			
+			<div th:if="${session.mode == 'update'}">
+				<button type="submit" th:formaction="@{/todo/update}">更新</button>
+				<button type="submit" th:formaction="@{/todo/delete}">削除</button>
+			</div>
+			<div th:unless="${session.mode == 'update'}">
+				<button type="submit" th:formaction="@{/todo/create}">登録</button>
+				<button type="submit" th:formaction="@{/todo/cancel}">キャンセル</button>
+			</div>
 			<div>
 				<a th:href="@{/todo/create/form}">
- 					 <button type="button">新規追加</button>
+ 					 <button type="submit">新規追加</button>
 				</a>
 				<button type="submit" th:formaction="@{/todo/cancel}">キャンセル</button>
 			</div>
