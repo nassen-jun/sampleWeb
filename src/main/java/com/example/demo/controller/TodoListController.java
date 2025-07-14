@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.todolist.dao.TodoDaoImpl;
@@ -185,6 +186,17 @@ public class TodoListController {
 	@PostMapping("/todo/delete")
 	public String deleteTodo(@ModelAttribute TodoData todoData) {
 		todoRepository.deleteById(todoData.getId());
+		return "redirect:/todo";
+		
+	}
+	
+	@PostMapping("/todo/deleteChecked")
+	public String deleteChecked(@RequestParam(name = "ids", required = false) List<Integer> ids) {
+		if(ids != null) {
+			for(Integer id : ids) {
+				todoRepository.deleteById(id);
+			}
+		}
 		return "redirect:/todo";
 		
 	}
