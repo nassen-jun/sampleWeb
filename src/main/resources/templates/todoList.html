@@ -75,7 +75,7 @@
 				<td><input type="checkbox" name="ids" th:value="${todo.id}" /></td>
 			</tr>
 		</table>		
-				<button type="submit">削除</button>
+				<button type="submit" onclick="return confirm('選択したToDoを削除してもよろしいですか？')">削除</button>
 	</form>
 	
 	<div>

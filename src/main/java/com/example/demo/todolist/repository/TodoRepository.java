@@ -2,6 +2,7 @@ package com.example.demo.todolist.repository;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -23,4 +24,6 @@ public interface TodoRepository extends JpaRepository<Todo, Integer>{
     List<Todo> findByDeadlineLessThanEqualOrderByDeadlineAsc(Date to);
 
     List<Todo> findByDone(String done);
+    
+    Optional<Todo> findByTitle(String title);
 }

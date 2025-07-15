@@ -87,6 +87,7 @@ public class TodoListController {
 		mv.addObject("todoList", todoPage.getContent()); //検索結果
 		return mv;
 	}
+	
 	@PostMapping("/todo/query")
 	public ModelAndView queryTodo(@ModelAttribute TodoQuery todoQuery,
 								BindingResult result,
@@ -148,9 +149,10 @@ public class TodoListController {
 			return "redirect:/todo";
 		} else {
 			//エラーあり
-			return "todoForm";	
+			return "todoForm";
 		}
 	}
+	
 	//ToDo一覧に戻る
 	//ToDo入力画面で「キャンセル登録」ボタンがクリックされたとき
 	@PostMapping("/todo/cancel")
@@ -164,8 +166,7 @@ public class TodoListController {
 		Todo todo = todoRepository.findById(id).get();
 		mv.addObject("todoData", todo);
 		session.setAttribute("mode", "update");
-		return mv;
-		
+		return mv;	
 	}
 
 	@PostMapping("/todo/update")
@@ -186,8 +187,7 @@ public class TodoListController {
 	@PostMapping("/todo/delete")
 	public String deleteTodo(@ModelAttribute TodoData todoData) {
 		todoRepository.deleteById(todoData.getId());
-		return "redirect:/todo";
-		
+		return "redirect:/todo";	
 	}
 	
 	@PostMapping("/todo/deleteChecked")
@@ -198,7 +198,5 @@ public class TodoListController {
 			}
 		}
 		return "redirect:/todo";
-		
 	}
-	
 }

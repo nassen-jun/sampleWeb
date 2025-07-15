@@ -60,7 +60,7 @@
 				<button type="submit" th:formaction="@{/todo/create}">登録</button>
 				<button type="submit" th:formaction="@{/todo/cancel}">キャンセル</button>
 			</div>
-			<div>
+			<div th:if="${session.mode == 'update'}">
 				<a th:href="@{/todo/create/form}">
  					 <button type="submit">新規追加</button>
 				</a>

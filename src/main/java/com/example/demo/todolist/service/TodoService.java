@@ -3,6 +3,7 @@ package com.example.demo.todolist.service;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -103,7 +104,20 @@ public class TodoService {
 				ans = false;
 			}
 		}
-
+		
+		//件名が重複した場合、エラー
+		Optional<Todo> existing = todoRepository.findByTitle(title);
+		if(existing.isPresent()) {
+			if(todoData.getId() == null || !existing.get().getId().equals(todoData.getId())) {
+				FieldError fieldError = new FieldError(
+						result.getObjectName(),
+						"title",
+						"件名が重複してます");
+					result.addError(fieldError);
+					ans = false;
+			}
+		}
+		
 		// 期限チェック（過去日付はエラー）
 		String deadline = todoData.getDeadline();
 		if (!deadline.isEmpty()) {
