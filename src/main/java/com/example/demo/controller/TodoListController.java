@@ -81,7 +81,8 @@ public class TodoListController {
 		//sessionに保存されている条件で検索
 		TodoQuery todoQuery = (TodoQuery)session.getAttribute("todoQuery");
 		Page<Todo> todoPage = todoDaoImpl.findByCriteria(todoQuery, pageable);
-		
+		todoQuery.setCurrentPage(pageable.getPageNumber());
+		session.setAttribute("todoQuery", todoQuery);
 		mv.addObject("todoQuery", todoQuery); //検索条件表示用
 		mv.addObject("todoPage", todoPage); //page情報
 		mv.addObject("todoList", todoPage.getContent()); //検索結果
@@ -123,10 +124,16 @@ public class TodoListController {
 	//Todo一覧画面で「新規追加」がクリックされたとき
 	@GetMapping("/todo/create/form")
 	public ModelAndView createTodo(ModelAndView mv) {
+		TodoData data = new TodoData();
+		Integer maxId = todoRepository.findMaxId();
+		int nextId = (maxId != null) ? maxId +1 : 1;
+		data.setTitle("todo-" + nextId);
+		
 		mv.setViewName("todoForm");
-		mv.addObject("todoData", new TodoData());
+		mv.addObject("todoData", data);
 		session.setAttribute("mode", "create");
 		return mv;
+		
 	}
 	
 	@PostMapping("/todo/create/form")
@@ -141,7 +148,8 @@ public class TodoListController {
 									BindingResult result,
 									Model model) {
 		//エラーチェック
-		boolean isValid = todoService.isValid(todoData, result);
+		String mode = (String)session.getAttribute("mode");
+		boolean isValid = todoService.isValid(todoData, result, mode);
 		if(!result.hasErrors() && isValid) {
 			//エラーなし
 			Todo todo = todoData.toEntity();
@@ -173,7 +181,8 @@ public class TodoListController {
 	public String updateTodo(@ModelAttribute @Validated TodoData todoData,
 							BindingResult result, Model model) {
 		//エラーチェック
-		boolean isValid = todoService.isValid(todoData, result);
+		String mode = (String) session.getAttribute("mode");
+		boolean isValid = todoService.isValid(todoData, result, mode);
 		if(!result.hasErrors() && isValid) {
 			//エラーなし
 			Todo todo = todoData.toEntity();

@@ -10,7 +10,7 @@ public class TodoQuery {
 	private String deadlineFrom;
 	private String deadlineTo;
 	private String done;
-	
+	private Integer currentPage = 0;
 	public TodoQuery() {
 		title = "";
 		importance = -1;
@@ -18,5 +18,6 @@ public class TodoQuery {
 		deadlineFrom="";
 		deadlineTo = "";
 		done = "";
+		currentPage = 0;
 	}
 }

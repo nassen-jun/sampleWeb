@@ -82,7 +82,7 @@ public class TodoService {
 
 		return ans;
 	}
-	public boolean isValid(TodoData todoData, BindingResult result) {
+	public boolean isValid(TodoData todoData, BindingResult result, String mode) {
 		boolean ans = true;
 
 		// 件名が全角スペースだけの場合はエラー
@@ -120,7 +120,7 @@ public class TodoService {
 		
 		// 期限チェック（過去日付はエラー）
 		String deadline = todoData.getDeadline();
-		if (!deadline.isEmpty()) {
+		if (!deadline.isEmpty() && "create".equals(mode)) {
 			LocalDate today = LocalDate.now();
 			try {
 				LocalDate deadlineDate = LocalDate.parse(deadline);

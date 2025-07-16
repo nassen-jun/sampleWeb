@@ -12,7 +12,7 @@
 				<tr>
 					<th>件名</th>
 					<td>
-						<input type="text" th:field="*{title}" size="40" th:value="*{title}">
+						<input type="text" th:field="*{title}" size="40" th:value="*{title}" >
 						<div th:if="${#fields.hasErrors('title')}" th:errors="*{title}"
 							th:errorclass="red"></div>
 					</td>
