@@ -6,6 +6,7 @@
 <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
+	${#locale.language}=<span th:text="${#locale.language}"></span>
 	<form th:action="@{/}" method="post" th:object="${todoQuery}">
 		<div style="display:flex">
 			<table border="1">
@@ -78,9 +79,14 @@
 				<button type="submit" onclick="return confirm('選択したToDoを削除してもよろしいですか？')">削除</button>
 	</form>
 	
-	<div>
-		<span th:text="|${todoPage.number + 1} / ${todoPage.totalPages} ページを表示中|"></span>
-		<ul id="nav">
+	<div th:if="${todoPage != null}">
+  		<span th:if="${todoPage.totalElements > 0}"
+   		     th:text="|${todoPage.number + 1} / ${todoPage.totalPages} ページを表示中|">
+ 		 </span>
+		  <span th:if="${todoPage.totalElements == 0}">
+ 			   データがありません。
+ 		 </span>
+		<ul id="nav" th:if="${todoPage.totalPages > 0}">
 			<li>
 				<span th:if="${todoPage.first}">←前</span>
 				<a th:unless="${todoPage.first}" th:href="@{/todo/query(page=${todoPage.number - 1})}">←前</a>
